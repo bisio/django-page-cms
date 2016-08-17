@@ -12,6 +12,8 @@ from inspect import isclass, getmembers
 import os
 import time
 
+PLACEHOLDER_ERROR = _("[Placeholder %(name)s had syntax error: %(error)s]")
+
 def parse_placeholder(parser, token):
     """Parser that understand all the placeholder's parameters."""
     bits = token.split_contents()

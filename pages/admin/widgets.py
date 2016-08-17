@@ -25,7 +25,6 @@ if PAGE_TAGGING:
         """An autocompete widget"""
         class Media:
             js = [join(PAGES_MEDIA_URL, path) for path in (
-                'javascript/jquery.js',
                 'javascript/jquery.bgiframe.min.js',
                 'javascript/jquery.ajaxQueue.js',
                 'javascript/jquery.autocomplete.min.js'
@@ -49,7 +48,6 @@ class RichTextarea(Textarea):
     """A RichTextarea widget."""
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
-            'javascript/jquery.js',
         )]
         css = {
             'all': [join(PAGES_MEDIA_URL, path) for path in (
@@ -138,7 +136,6 @@ class markItUpMarkdown(Textarea):
     
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
-            'javascript/jquery.js',
             'markitup/jquery.markitup.js',
             'markitup/sets/markdown/set.js',
         )]
@@ -162,7 +159,6 @@ class markItUpHTML(Textarea):
     
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
-            'javascript/jquery.js',
             'markitup/jquery.markitup.js',
             'markitup/sets/default/set.js',
         )]

@@ -30,7 +30,7 @@ def details(request, path=None, lang=None):
     template_name = settings.DEFAULT_PAGE_TEMPLATE
 
     if path is None:
-        slug, path, lang = get_slug_and_relative_path(request.path, lang)
+        slug, path, lang = get_slug_and_relative_path(request.path, lang, urlconf=getattr(request, 'urlconf', None))
 
     if lang is None:
         lang = get_language_from_request(request)
@@ -54,7 +54,7 @@ def details(request, path=None, lang=None):
     if not current_page:
         alias = PageAlias.objects.from_path(request, path, lang)
         if alias:
-            url = alias.page.get_absolute_url(lang)
+            url = alias.page.get_absolute_url(language=lang, urlconf=getattr(request, 'urlconf', None))
             return HttpResponsePermanentRedirect(url)
         raise Http404
 
@@ -67,7 +67,7 @@ def details(request, path=None, lang=None):
     
     if current_page.redirect_to:
         return HttpResponsePermanentRedirect(
-            current_page.redirect_to.get_absolute_url(lang))
+            current_page.redirect_to.get_absolute_url(language=lang, urlconf=getattr(request, 'urlconf', None)))
     
     template_name = current_page.get_template()
     

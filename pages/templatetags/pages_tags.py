@@ -183,12 +183,14 @@ def show_absolute_url(context, page, lang=None):
     :param page: the page object, slug or id
     :param lang: the wanted language (defaults to `settings.PAGE_DEFAULT_LANGUAGE`)
     """
+    request = context.get('request')
     if not lang:
         lang = context.get('lang', settings.PAGE_DEFAULT_LANGUAGE)
     page = get_page_from_string_or_id(page, lang)
     if not page:
         return {'content':''}
-    url = page.get_absolute_url(language=lang)
+    urlconf = getattr(request, 'urlconf', None)
+    url = page.get_absolute_url(language=lang, urlconf=urlconf)
     if url:
         return {'content':url}
     return {'content':''}

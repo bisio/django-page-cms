@@ -16,6 +16,7 @@ def get_request_mock():
         'SERVER_NAME': 'test',
         'SERVER_PORT': '8000',
         'HTTP_HOST': 'testhost',
+	'wsgi.input': None,
     })
     # Apply request middleware
     for middleware_method in bh._request_middleware:
@@ -55,9 +56,9 @@ def auto_render(func):
                             context_instance=RequestContext(request))
     return _dec
 
-def get_slug_and_relative_path(path, lang=None):
+def get_slug_and_relative_path(path, lang=None, urlconf=None):
     """Return the page's slug and relative path."""
-    root = reverse('pages-root')
+    root = reverse('pages-root', urlconf=urlconf)
     if path.startswith(root):
         path = path[len(root):]
     if len(path) and path[-1] == '/':

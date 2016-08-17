@@ -16,7 +16,7 @@ def get_context_mock():
         context.update(settings.PAGE_EXTRA_CONTEXT())
     return context
 
-def get_placeholders(template_name):
+def get_placeholders(template_name, urlconf=None):
     """Return a list of PlaceholderNode found in the given template.
 
     :param template_name: the name of the template file
@@ -27,6 +27,7 @@ def get_placeholders(template_name):
         return []
         
     request = get_request_mock()
+    request.urlconf = urlconf
     context = get_context_mock()
     # I need to render the template in order to extract
     # placeholder tags

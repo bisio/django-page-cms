@@ -100,6 +100,7 @@ class Page(models.Model):
         ordering = ['tree_id', 'lft']
         verbose_name = _('page')
         verbose_name_plural = _('pages')
+        permissions = (("browse_page", "Can browse Page"),)
 
     def save(self, *args, **kwargs):
         """Override the default ``save`` method."""
@@ -140,13 +141,13 @@ class Page(models.Model):
         """Return a :class:`QuerySet` of published children page"""
         return Page.objects.filter_published(self.get_children())
 
-    def invalidate(self):
+    def invalidate(self, urlconf=None):
         """Invalidate cached data for this page."""
 
         cache.delete(self.PAGE_LANGUAGES_KEY % (self.id))
         #cache.delete(self.PAGE_TEMPLATE_KEY % (self.id))
 
-        p_names = [p.name for p in get_placeholders(self.get_template())]
+        p_names = [p.name for p in get_placeholders(self.get_template(), urlconf=urlconf)]
         if 'slug' not in p_names:
             p_names.append('slug')
         if 'title' not in p_names:
@@ -181,13 +182,13 @@ class Page(models.Model):
             return False
         return Page.objects.root()[0].id == self.id
 
-    def get_absolute_url(self, language=None):
+    def get_absolute_url(self, urlconf=None, language=None):
         """Return the absolute page url. Add the language prefix if
         ``PAGE_USE_LANGUAGE_PREFIX`` setting is set to ``True``.
 
         :param language: the wanted url language.
         """
-        url = reverse('pages-root')
+        url = reverse('pages-root', urlconf=urlconf)
         if settings.PAGE_USE_LANGUAGE_PREFIX:
             url += str(language) + '/'
         return url + self.get_url(language)
